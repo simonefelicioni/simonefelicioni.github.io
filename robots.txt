@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://simonefelicioni.github.io/sitemap.xml
