@@ -65,10 +65,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--pin);outline-offset
   box-shadow:0 1px 2px rgba(15,27,45,.04),0 8px 24px rgba(15,27,45,.08)}
 .sidebar{isolation:isolate}
 .sidebar > *{position:relative;z-index:1}
-.sidebar::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;opacity:0;
-  background:radial-gradient(circle 240px at var(--mx,50%) var(--my,30%),#e6f2fc 0%,#f3f9fe 45%,rgba(243,249,254,0) 75%);
-  transition:opacity .35s ease}
-@media (hover:hover){.sidebar:hover::before{opacity:1}}
+.sidebar::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;
+  background:radial-gradient(circle 240px at var(--mx,50%) var(--my,0px),#e6f2fc 0%,#f3f9fe 45%,rgba(243,249,254,0) 75%)}
 .avatar{width:122px;height:122px;border-radius:50%;margin:0 auto 14px;padding:4px;
   background:var(--bg);border:2px solid var(--ring-soft);
   transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
@@ -381,9 +379,13 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-si
     btn.addEventListener('click',function(){set(!acc.classList.contains('open'))});
     body.addEventListener('click',function(e){if(!acc.classList.contains('open')){e.preventDefault();set(true);}});
   });
-  var sbx=document.querySelector('.sidebar');
+  var sbx=document.querySelector('.sidebar'),gx=null,gy=0,tx=0,ty=0,raf=0;
+  function glow(){gx+=(tx-gx)*0.18;gy+=(ty-gy)*0.18;
+    sbx.style.setProperty('--mx',gx.toFixed(1)+'px');sbx.style.setProperty('--my',gy.toFixed(1)+'px');
+    raf=(Math.abs(tx-gx)>0.5||Math.abs(ty-gy)>0.5)?requestAnimationFrame(glow):0;}
   sbx.addEventListener('mousemove',function(e){var r=sbx.getBoundingClientRect();
-    sbx.style.setProperty('--mx',(e.clientX-r.left)+'px');sbx.style.setProperty('--my',(e.clientY-r.top)+'px');},{passive:true});
+    tx=e.clientX-r.left;ty=e.clientY-r.top;if(gx===null){gx=r.width/2;gy=0;}
+    if(!raf)raf=requestAnimationFrame(glow);},{passive:true});
   var rl=document.querySelector('.resume-list');
   function edge(){rl.classList.toggle('at-end',rl.scrollLeft+rl.clientWidth>=rl.scrollWidth-4)}
   rl.addEventListener('scroll',edge,{passive:true});window.addEventListener('resize',edge);edge();
