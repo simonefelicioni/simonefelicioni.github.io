@@ -146,7 +146,11 @@ h3{font-size:16px;font-weight:600;color:var(--heading);margin:20px 0 12px}
 #news{padding-top:44px}
 .news-list{list-style:none;margin:0;padding:0}
 .news-list li{position:relative;display:flex;align-items:baseline;gap:14px;padding:8px 0}
-.news-year{flex:none;font-size:12px;font-weight:700;color:var(--site-blue);background:var(--chip-bg);border-radius:6px;padding:2px 8px;letter-spacing:.02em}
+.news-year{flex:none;font-size:12px;font-weight:700;color:var(--site-blue);background:var(--chip-bg);border-radius:6px;padding:2px 8px;letter-spacing:.02em;transition:background .2s ease,color .2s ease}
+.news-list li{transition:transform .2s ease}
+.news-list li:hover{transform:translateX(2px)}
+.news-list li:hover .news-year{background:var(--site-blue);color:#fff}
+@media (prefers-reduced-motion: reduce){.news-list li:hover{transform:none}}
 .news-text{font-size:15px;color:var(--text)}
 .news-text a{color:var(--chip-text);text-decoration:none}
 .news-text a:hover{color:#005a96}
@@ -182,7 +186,7 @@ p.pub-item em{color:var(--muted)}
 
 /* ---------- Experience (colonna destra) ---------- */
 .experience{position:relative;padding:22px 0 0 28px;min-width:0}
-.experience::before{content:"";position:absolute;left:6px;top:0;bottom:0;width:2px;background:#2687c6;border-radius:2px}
+.experience::before{content:"";position:absolute;left:6px;top:calc(-14px - env(safe-area-inset-top,0px));bottom:calc(-80px - env(safe-area-inset-bottom,0px));width:2px;background:#2687c6}
 .resume-list{list-style:none;margin:0;padding:0}
 .sidebar{grid-column:1;grid-row:1}
 main{grid-column:2;grid-row:1;min-width:0}
