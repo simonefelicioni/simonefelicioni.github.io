@@ -60,9 +60,15 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--pin);outline-offset
 
 /* ---------- Sidebar ---------- */
 .sidebar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px);align-self:start;
-  background:linear-gradient(180deg,#f3f9fe 0%,#ffffff 100%);border:1px solid var(--side-border);
+  background:#ffffff;border:1px solid var(--side-border);
   border-radius:16px;padding:16px 20px 18px;text-align:center;
   box-shadow:0 1px 2px rgba(15,27,45,.04),0 8px 24px rgba(15,27,45,.08)}
+.sidebar{isolation:isolate}
+.sidebar > *{position:relative;z-index:1}
+.sidebar::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;opacity:0;
+  background:radial-gradient(circle 240px at var(--mx,50%) var(--my,30%),#e6f2fc 0%,#f3f9fe 45%,rgba(243,249,254,0) 75%);
+  transition:opacity .35s ease}
+@media (hover:hover){.sidebar:hover::before{opacity:1}}
 .avatar{width:122px;height:122px;border-radius:50%;margin:0 auto 14px;padding:4px;
   background:var(--bg);border:2px solid var(--ring-soft);
   transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
@@ -243,7 +249,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-si
   .experience{grid-row:2}
   main{grid-column:1;grid-row:3}
   .resume-list li{width:190px}
-  .sidebar{position:static;display:flex;flex-wrap:wrap;align-items:center;gap:12px;text-align:left;padding:12px 14px}
+  .sidebar{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:12px;text-align:left;padding:12px 14px}
   .avatar{width:52px;height:52px;margin:0;padding:2px;border-width:1.5px}
   .who{margin:0}
   .sidebar-links{flex-direction:row;flex-wrap:wrap;gap:4px 16px;width:100%;padding:0}
@@ -375,6 +381,9 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-si
     btn.addEventListener('click',function(){set(!acc.classList.contains('open'))});
     body.addEventListener('click',function(e){if(!acc.classList.contains('open')){e.preventDefault();set(true);}});
   });
+  var sbx=document.querySelector('.sidebar');
+  sbx.addEventListener('mousemove',function(e){var r=sbx.getBoundingClientRect();
+    sbx.style.setProperty('--mx',(e.clientX-r.left)+'px');sbx.style.setProperty('--my',(e.clientY-r.top)+'px');},{passive:true});
   var rl=document.querySelector('.resume-list');
   function edge(){rl.classList.toggle('at-end',rl.scrollLeft+rl.clientWidth>=rl.scrollWidth-4)}
   rl.addEventListener('scroll',edge,{passive:true});window.addEventListener('resize',edge);edge();
